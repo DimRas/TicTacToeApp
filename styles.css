@@ -1,0 +1,494 @@
+:root {
+  --primary-color: #0ff;
+  --secondary-color: #f0f;
+  --background-color: rgba(26, 26, 26, 0.95);
+  --cell-color: #2a2a2a;
+  --text-color: #fff;
+  --window-border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-app-region: drag; /* Make window draggable */
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Orbitron", sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border: var(--window-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Make buttons and interactive elements not draggable */
+button,
+.cell,
+.reset-btn {
+  -webkit-app-region: no-drag;
+}
+
+/* Add window controls */
+.window-controls {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 8px;
+  -webkit-app-region: no-drag;
+}
+
+.window-control {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+
+.window-control.close {
+  background-color: #ff5f56;
+}
+
+.window-control.minimize {
+  background-color: #ffbd2e;
+}
+
+.window-control.maximize {
+  background-color: #27c93f;
+}
+
+.container {
+  text-align: center;
+  padding: 1rem;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  margin-bottom: 0;
+  text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color),
+    0 0 30px var(--primary-color);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.game-info {
+  margin-bottom: 0;
+}
+
+.status {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.current-player {
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 0.4rem 0.8rem;
+  border-radius: 10px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.current-player.x {
+  color: var(--primary-color);
+  text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color),
+    0 0 30px var(--primary-color);
+  background: rgba(0, 255, 255, 0.1);
+  border: 2px solid var(--primary-color);
+}
+
+.current-player.o {
+  color: var(--secondary-color);
+  text-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color),
+    0 0 30px var(--secondary-color);
+  background: rgba(255, 0, 255, 0.1);
+  border: 2px solid var(--secondary-color);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.4);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(0, 255, 255, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 255, 255, 0);
+  }
+}
+
+.reset-btn {
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 0.5rem 1.5rem;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+}
+
+.reset-btn:hover {
+  background: var(--primary-color);
+  color: var(--background-color);
+  box-shadow: 0 0 15px var(--primary-color);
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 0 auto;
+  width: min(95vw, 500px);
+  aspect-ratio: 1;
+  background: var(--cell-color);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+  opacity: 0.8;
+}
+
+.cell {
+  aspect-ratio: 1;
+  background: var(--background-color);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(3.5rem, 10vw, 7rem);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cell:hover {
+  background: #333;
+  box-shadow: 0 0 10px var(--primary-color);
+}
+
+.cell.x {
+  color: var(--primary-color);
+  text-shadow: 0 0 10px var(--primary-color);
+}
+
+.cell.o {
+  color: var(--secondary-color);
+  text-shadow: 0 0 10px var(--secondary-color);
+}
+
+.score-board {
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.player-x {
+  color: var(--primary-color);
+}
+
+.player-o {
+  color: var(--secondary-color);
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color),
+      0 0 30px var(--primary-color);
+  }
+  to {
+    text-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--primary-color),
+      0 0 40px var(--primary-color);
+  }
+}
+
+/* Winning line animations */
+.winning-line {
+  animation: winPulse 1s ease-in-out infinite;
+}
+
+.winning-line.x {
+  position: relative;
+}
+
+.winning-line.x::after {
+  content: "";
+  position: absolute;
+  background: var(--primary-color);
+  box-shadow: 0 0 10px var(--primary-color);
+  animation: crossLine 0.5s ease-out forwards;
+}
+
+.winning-line.o {
+  position: relative;
+}
+
+.winning-line.o::after {
+  content: "";
+  position: absolute;
+  background: var(--secondary-color);
+  box-shadow: 0 0 10px var(--secondary-color);
+  animation: crossLine 0.5s ease-out forwards;
+}
+
+/* Bounce animation for winning player */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.winner-bounce {
+  animation: bounce 0.5s ease-in-out infinite;
+}
+
+/* Cross line animations for different directions */
+@keyframes crossLine {
+  0% {
+    width: 0;
+    height: 4px;
+    opacity: 0;
+  }
+  100% {
+    width: 100%;
+    height: 4px;
+    opacity: 1;
+  }
+}
+
+@keyframes crossLineVertical {
+  0% {
+    height: 0;
+    width: 4px;
+    opacity: 0;
+  }
+  100% {
+    height: 100%;
+    width: 4px;
+    opacity: 1;
+  }
+}
+
+@keyframes crossLineDiagonal {
+  0% {
+    width: 0;
+    height: 4px;
+    opacity: 0;
+    transform: rotate(45deg);
+  }
+  100% {
+    width: 140%;
+    height: 4px;
+    opacity: 1;
+    transform: rotate(45deg);
+  }
+}
+
+@keyframes crossLineDiagonalReverse {
+  0% {
+    width: 0;
+    height: 4px;
+    opacity: 0;
+    transform: rotate(-45deg);
+  }
+  100% {
+    width: 140%;
+    height: 4px;
+    opacity: 1;
+    transform: rotate(-45deg);
+  }
+}
+
+/* Apply different animations based on winning combination */
+.winning-line[data-direction="horizontal"]::after {
+  animation: crossLine 0.5s ease-out forwards;
+}
+
+.winning-line[data-direction="vertical"]::after {
+  animation: crossLineVertical 0.5s ease-out forwards;
+}
+
+.winning-line[data-direction="diagonal"]::after {
+  animation: crossLineDiagonal 0.5s ease-out forwards;
+}
+
+.winning-line[data-direction="diagonal-reverse"]::after {
+  animation: crossLineDiagonalReverse 0.5s ease-out forwards;
+}
+
+/* Responsive Design */
+@media (max-height: 700px) {
+  .container {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .game-board {
+    width: min(90vw, 450px);
+  }
+
+  .cell {
+    font-size: clamp(3rem, 8vw, 6rem);
+  }
+}
+
+/* Floating background symbols */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.floating-symbol {
+  position: fixed;
+  color: rgba(0, 255, 255, 0.1);
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  pointer-events: none;
+  animation: floatSymbol 15s linear infinite;
+  z-index: -1;
+}
+
+.floating-symbol.o {
+  color: rgba(255, 0, 255, 0.1);
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+}
+
+@keyframes floatSymbol {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Add container for floating symbols */
+.floating-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.win-message {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.win-message .winner {
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 0.4rem 0.8rem;
+  border-radius: 10px;
+  animation: winPulse 1s ease-in-out infinite;
+}
+
+.win-message .winner.x {
+  color: var(--primary-color);
+  text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color),
+    0 0 30px var(--primary-color);
+  background: rgba(0, 255, 255, 0.1);
+  border: 2px solid var(--primary-color);
+}
+
+.win-message .winner.o {
+  color: var(--secondary-color);
+  text-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color),
+    0 0 30px var(--secondary-color);
+  background: rgba(255, 0, 255, 0.1);
+  border: 2px solid var(--secondary-color);
+}
+
+.win-message .winner.draw {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  animation: winPulse 1s ease-in-out infinite;
+  color: var(--text-color);
+  text-shadow: 0 0 8px var(--text-color), 0 0 15px var(--text-color);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--text-color);
+}
+
+@keyframes winPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.4);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px 10px rgba(0, 255, 255, 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 255, 255, 0);
+  }
+}

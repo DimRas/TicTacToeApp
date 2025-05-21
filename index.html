@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neon Tic Tac Toe</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  </head>
+  <body>
+    <div class="window-controls">
+      <div class="window-control close" id="closeBtn"></div>
+      <div class="window-control minimize" id="minimizeBtn"></div>
+      <div class="window-control maximize" id="maximizeBtn"></div>
+    </div>
+    <div class="floating-container" id="floatingContainer"></div>
+    <div class="container">
+      <h1 class="title">Neon Tic Tac Toe</h1>
+
+      <div class="game-info">
+        <div class="status" id="status">
+          <span>Player</span>
+          <span class="current-player x" id="currentPlayer">X</span>
+          <span>'s turn</span>
+        </div>
+        <button id="resetBtn" class="reset-btn">New Game</button>
+      </div>
+
+      <div class="game-board" id="board">
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+      </div>
+
+      <div class="score-board">
+        <div class="score">
+          <span class="player-x">Player X</span>
+          <span id="scoreX">0</span>
+        </div>
+        <div class="score">
+          <span class="player-o">Player O</span>
+          <span id="scoreO">0</span>
+        </div>
+      </div>
+    </div>
+    <script src="renderer.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
